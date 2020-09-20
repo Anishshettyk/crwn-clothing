@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid black;
+    border-radius: 7px;
     margin: 0 7.5px 15px;
     overflow: hidden;
 
@@ -21,8 +21,6 @@
             opacity: 0.9;
         }
     }
-
-
 
     &.large {
         background-position: top center;
@@ -53,8 +51,7 @@
         background-color: white;
         opacity: 0.7;
         position: absolute;
-
-
+        border-radius: 10px;
 
         .title {
             font-weight: bold;
