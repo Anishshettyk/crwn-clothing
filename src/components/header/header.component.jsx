@@ -19,10 +19,12 @@ const Header = ({ currentUser }) => (
         CONTACT
       </Link>
       {currentUser ? (
+        //if there is a user logged in show signout button
         <div className="option" onClick={() => auth.signOut()}>
           Sign out
         </div>
       ) : (
+        //if not show them sign in button
         <Link className="option" to="/signin">
           Signin
         </Link>

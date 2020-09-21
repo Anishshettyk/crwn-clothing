@@ -13,6 +13,32 @@ const config = {
   measurementId: "G-EH66DXDV73",
 };
 
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return; //if user does not exist return from function
+  //passing the userId to users collection as a id
+  const userref = firestore.doc(`users/${userAuth.uid}`);
+  //getting the data from the database about that particular user by the id
+  const snapshot = await userref.get();
+
+  //if the user's info is not stored in the database then store the data to it
+  if (!snapshot.exists) {
+    //getting the userr name and email
+    const { displayName, email } = userAuth;
+    //getting the date when it is created
+    const createdAt = new Date();
+    try {
+      //settings the data for that user id in database
+      await userref.set({ displayName, email, createdAt, ...additionalData });
+      //if error logging back the error
+    } catch (err) {
+      console.log("error creating user", err.message);
+    }
+  }
+  //returning the data for furture user
+  return userref;
+};
+
+//initializing firebase from config object
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
