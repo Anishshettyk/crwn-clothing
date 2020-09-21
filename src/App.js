@@ -30,11 +30,30 @@ class App extends React.Component {
 
   //when the component is mounted set unsubscribeFromAuth to the currentUser
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
-      //this function is used to save user data to database
-      await createUserProfileDocument(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      //if there is a user then store the data in database
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        //onSnapshot method provides a document snapshot when intially loaded and it will call itself when we update the user data
+        userRef.onSnapshot((snapshot) => {
+          this.setState({
+            //set the current user data
+            currentUser: {
+              //get the user uid from database
+              id: snapshot.id,
+              //spread  other data from database
+              ...snapshot.data(),
+            },
+          });
+        });
+      } else {
+        //if there is no user then set the current user to null value by userAuth
+        this.setState({ currentUser: userAuth });
+      }
     });
   }
+  //called at last and it will unmount the logging in functionality
   componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
@@ -46,8 +65,8 @@ class App extends React.Component {
         <Header currentUser={this.state.currentUser} />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/shop" component={ShopPage} />
-          <Route path="/signin" component={SignInAndSignUpPage} />
+          <Route exact path="/shop" component={ShopPage} />
+          <Route exact path="/signin" component={SignInAndSignUpPage} />
         </Switch>
       </div>
     );
