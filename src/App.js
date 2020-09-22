@@ -46,6 +46,7 @@ class App extends React.Component {
               ...snapshot.data(),
             },
           });
+          console.log(this.state);
         });
       } else {
         //if there is no user then set the current user to null value by userAuth
