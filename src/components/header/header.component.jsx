@@ -8,6 +8,11 @@ import "./header.styles.scss";
 
 import { auth } from "./../../firebase/firebase.utils";
 
+//cart icon component
+import CartIcon from "./../cart-icon/cart-icon.component";
+//cart dropdown component
+import CartDropdown from "./../cart-dropdown/cart-dropdown.component";
+
 const Header = ({ currentUser }) => (
   <div className="header">
     <Link to="/" className="logo-container">
@@ -31,7 +36,9 @@ const Header = ({ currentUser }) => (
           Signin
         </Link>
       )}
+      <CartIcon />
     </div>
+    <CartDropdown />
   </div>
 );
 const mapStateToProps = (state) => ({

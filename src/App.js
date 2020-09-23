@@ -15,6 +15,7 @@ import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up
 //importing auth from firebase.
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
+//importing user action for settings currentUser
 import { setCurrentUser } from "./redux/user/user.actions";
 
 //making a class component of App from react component
