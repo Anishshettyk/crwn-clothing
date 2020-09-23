@@ -6,7 +6,7 @@ import CustomButton from "./../custom-button/custom-button.component";
 
 import { ReactComponent as Logo } from "./../../assets/google.svg";
 
-import { signInwithGoogle } from "./../../firebase/firebase.utils";
+import { auth, signInwithGoogle } from "./../../firebase/firebase.utils";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -18,9 +18,16 @@ class SignIn extends React.Component {
     };
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
-    this.setState({ email: "", password: "" });
+    const { email, password } = this.state;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({ email: "", password: "" });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   handleChange = (event) => {
@@ -53,7 +60,11 @@ class SignIn extends React.Component {
           />
           <div className="buttons">
             <CustomButton type="submit">sign in</CustomButton>
-            <CustomButton onClick={signInwithGoogle} isGoogleSignIn>
+            <CustomButton
+              type="button"
+              onClick={signInwithGoogle}
+              isGoogleSignIn
+            >
               <Logo className="google-icon"></Logo>
             </CustomButton>
           </div>

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+//connect is a higher order component which gives access to modify our component to give access to redux
+import { connect } from "react-redux";
 
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import "./header.styles.scss";
@@ -32,5 +34,9 @@ const Header = ({ currentUser }) => (
     </div>
   </div>
 );
-
-export default Header;
+const mapStateToProps = (state) => ({
+  //state is root reducer
+  //root reducer has a key called user which points to user reducer where the initial state is current user
+  currentUser: state.user.currentUser,
+});
+export default connect(mapStateToProps)(Header);

@@ -1,6 +1,7 @@
 import React from "react";
 //for React router
 import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 
 //css file for app.js
 import "./App.css";
@@ -14,22 +15,17 @@ import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up
 //importing auth from firebase.
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
+import { setCurrentUser } from "./redux/user/user.actions";
+
 //making a class component of App from react component
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      currentUser: null,
-      //settings the currentUser to null
-      //if it has a value then setState will assign a value if not its null
-    };
-  }
   //starting will null
   unsubscribeFromAuth = null;
 
   //when the component is mounted set unsubscribeFromAuth to the currentUser
   componentDidMount() {
+    const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       //if there is a user then store the data in database
       if (userAuth) {
@@ -37,20 +33,16 @@ class App extends React.Component {
 
         //onSnapshot method provides a document snapshot when intially loaded and it will call itself when we update the user data
         userRef.onSnapshot((snapshot) => {
-          this.setState({
-            //set the current user data
-            currentUser: {
-              //get the user uid from database
-              id: snapshot.id,
-              //spread  other data from database
-              ...snapshot.data(),
-            },
+          setCurrentUser({
+            //get the user uid from database
+            id: snapshot.id,
+            //spread  other data from database
+            ...snapshot.data(),
           });
-          console.log(this.state);
         });
       } else {
         //if there is no user then set the current user to null value by userAuth
-        this.setState({ currentUser: userAuth });
+        setCurrentUser(userAuth);
       }
     });
   }
@@ -63,7 +55,7 @@ class App extends React.Component {
     //passing the current user by using this.state.currentUser and using it in haeders to have a signout /sign-in functionality.
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/shop" component={ShopPage} />
@@ -73,5 +65,9 @@ class App extends React.Component {
     );
   }
 }
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
 
-export default App;
+//=>value is set to null because we don't set it in our app component
+export default connect(null, mapDispatchToProps)(App);
