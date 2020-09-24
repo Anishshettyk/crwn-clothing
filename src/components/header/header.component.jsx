@@ -38,6 +38,7 @@ const Header = ({ currentUser, hiddden }) => (
       )}
       <CartIcon />
     </div>
+    {/*if hiddden is true then dont show anything if false shop cart dropdown*/}
     {hiddden ? null : <CartDropdown />}
   </div>
 );
