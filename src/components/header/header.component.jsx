@@ -13,7 +13,7 @@ import CartIcon from "./../cart-icon/cart-icon.component";
 //cart dropdown component
 import CartDropdown from "./../cart-dropdown/cart-dropdown.component";
 
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, hiddden }) => (
   <div className="header">
     <Link to="/" className="logo-container">
       <Logo className="logo" />
@@ -38,12 +38,13 @@ const Header = ({ currentUser }) => (
       )}
       <CartIcon />
     </div>
-    <CartDropdown />
+    {hiddden ? null : <CartDropdown />}
   </div>
 );
-const mapStateToProps = (state) => ({
+const mapStateToProps = ({ user: { currentUser }, cart: { hiddden } }) => ({
   //state is root reducer
   //root reducer has a key called user which points to user reducer where the initial state is current user
-  currentUser: state.user.currentUser,
+  currentUser,
+  hiddden,
 });
 export default connect(mapStateToProps)(Header);
