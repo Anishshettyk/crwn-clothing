@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { createStructuredSelector } from "reselect";
 //connect is a higher order component which gives access to modify our component to give access to redux
 import { connect } from "react-redux";
 
@@ -13,7 +14,10 @@ import CartIcon from "./../cart-icon/cart-icon.component";
 //cart dropdown component
 import CartDropdown from "./../cart-dropdown/cart-dropdown.component";
 
-const Header = ({ currentUser, hiddden }) => (
+import { selectCartHidden } from "./../../redux/cart/cart.selectors";
+import { selectCurrentUser } from "./../../redux/user/user.selector";
+
+const Header = ({ currentUser, hidden }) => (
   <div className="header">
     <Link to="/" className="logo-container">
       <Logo className="logo" />
@@ -39,13 +43,14 @@ const Header = ({ currentUser, hiddden }) => (
       <CartIcon />
     </div>
     {/*if hiddden is true then dont show anything if false shop cart dropdown*/}
-    {hiddden ? null : <CartDropdown />}
+    {hidden ? null : <CartDropdown />}
   </div>
 );
-const mapStateToProps = ({ user: { currentUser }, cart: { hiddden } }) => ({
+const mapStateToProps = createStructuredSelector({
+  //createStructuredSelector passes the state automatically
   //state is root reducer
   //root reducer has a key called user which points to user reducer where the initial state is current user
-  currentUser,
-  hiddden,
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
 });
 export default connect(mapStateToProps)(Header);
