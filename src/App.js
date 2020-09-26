@@ -19,7 +19,7 @@ import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 //importing user action for settings currentUser
 import { setCurrentUser } from "./redux/user/user.actions";
-
+//importing user selector
 import { selectCurrentUser } from "./redux/user/user.selector";
 
 //making a class component of App from react component
@@ -58,6 +58,7 @@ class App extends React.Component {
 
   render() {
     //passing the current user by using this.state.currentUser and using it in haeders to have a signout /sign-in functionality.
+
     return (
       <div>
         <Header />
