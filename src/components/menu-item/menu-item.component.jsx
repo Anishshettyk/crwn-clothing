@@ -8,8 +8,11 @@ import {
   ContentSubtitle,
 } from "./menu-item.styles";
 
-const MenuItem = ({ title, imageUrl, size, history, linkUrl }) => (
-  <MenuItemContainer size={size} onClick={() => history.push(`${linkUrl}`)}>
+const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
+  <MenuItemContainer
+    size={size}
+    onClick={() => history.push(`${match.url}${linkUrl}`)}
+  >
     <BackgroundImageContainer
       imageUrl={imageUrl}
       className="background-image"
