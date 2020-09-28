@@ -10,7 +10,7 @@ import {
   createUserProfileDocument,
 } from "./../../firebase/firebase.utils";
 
-import "./sign-up.styles.scss";
+import { SignUpContainer, SignUpTitle } from "./sign-up.styles";
 
 //A class Component
 class SignUp extends React.Component {
@@ -78,8 +78,8 @@ class SignUp extends React.Component {
     const { displayName, email, password, confirmPassword } = this.state;
 
     return (
-      <div className="sign-up">
-        <h2 className="title">I don't have an account yet</h2>
+      <SignUpContainer>
+        <SignUpTitle>I don't have an account yet</SignUpTitle>
         <span>sign-up with your email and password</span>
         <form className="sign-up-form" onSubmit={this.handleSubmit}>
           <FormInput
@@ -116,7 +116,7 @@ class SignUp extends React.Component {
           />
           <CustomButton type="submit">SIGN UP</CustomButton>
         </form>
-      </div>
+      </SignUpContainer>
     );
   }
 }
