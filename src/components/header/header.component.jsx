@@ -11,7 +11,6 @@ import {
   LogoContainer,
   OptionsContainer,
   OptionLink,
-  OptionDiv,
 } from "./header.styles";
 
 import { auth } from "./../../firebase/firebase.utils";
@@ -34,14 +33,15 @@ const Header = ({ currentUser, hidden }) => (
       <OptionLink to="/shop">CONTACT</OptionLink>
       {currentUser ? (
         //if there is a user logged in show signout button
-        <OptionDiv onClick={() => auth.signOut()}>Sign out</OptionDiv>
+        <OptionLink as="div" onClick={() => auth.signOut()}>
+          Sign out
+        </OptionLink>
       ) : (
         //if not show them sign in button
         <OptionLink to="/signin">Signin</OptionLink>
       )}
       <CartIcon />
     </OptionsContainer>
-    {/*if hiddden is true then dont show anything if false shop cart dropdown*/}
     {hidden ? null : <CartDropdown />}
   </HeaderContainer>
 );
