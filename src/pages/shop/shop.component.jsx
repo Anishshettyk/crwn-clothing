@@ -2,15 +2,15 @@ import React from "react";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { fetchcollectionsStartAsync } from "./../../redux/shop/shop.actions";
+import { fetchcollectionsStart } from "./../../redux/shop/shop.actions";
 
 import CollectionPageConatiner from "./../collection/collection.container";
 import CollectionOverviewContainer from "./../../components/collections-overview/collections-overview.container";
 //match location and history is passed from the shop page route of app.js to shop.component page
 class ShopPage extends React.Component {
   componentDidMount() {
-    const { fetchcollectionsStartAsync } = this.props;
-    fetchcollectionsStartAsync();
+    const { fetchcollectionsStart } = this.props;
+    fetchcollectionsStart();
   }
 
   render() {
@@ -32,6 +32,6 @@ class ShopPage extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchcollectionsStartAsync: () => dispatch(fetchcollectionsStartAsync()),
+  fetchcollectionsStart: () => dispatch(fetchcollectionsStart()),
 });
 export default connect(null, mapDispatchToProps)(ShopPage);

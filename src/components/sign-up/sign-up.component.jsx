@@ -1,18 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 
 //importing input and button from components
 import FormInput from "./../form-input/form-input.component";
 import CustomButton from "./../custom-button/custom-button.component";
 
-//importing authentication and storing data function from firebase
-import {
-  auth,
-  createUserProfileDocument,
-} from "./../../firebase/firebase.utils";
-
 import { SignUpContainer, SignUpTitle } from "./sign-up.styles";
+import { signUpStart } from "./../../redux/user/user.actions";
 
-//A class Component
 class SignUp extends React.Component {
   constructor() {
     super();
@@ -26,42 +21,17 @@ class SignUp extends React.Component {
     };
   }
 
-  //function called when form is submitted
   handleSubmit = async (event) => {
-    //preventing the default behavior of browser
     event.preventDefault();
-    //getting the values from  the form where user has entered all the details
+    const { signUpStart } = this.props;
+
     const { displayName, email, password, confirmPassword } = this.state;
 
-    //checking if password and confirm password are not same
     if (password !== confirmPassword) {
-      //if not same showing a alert message and returning from the function
       alert("password and confirm password do not match");
       return;
     }
-
-    try {
-      //if the password match then this function creates a new user associated with the email address and password
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      //storing the new user data to database
-      //user contains email and password
-      //displayName contains users name
-      await createUserProfileDocument(user, { displayName });
-
-      //if user data is successfully stored then clear form inputs
-      this.setState({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-    } catch (err) {
-      //if error show error message
-      console.error(err);
-    }
+    signUpStart({ displayName, email, password });
   };
 
   //whenever anything is added to the inputs its stored by using setState method
@@ -120,5 +90,8 @@ class SignUp extends React.Component {
     );
   }
 }
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials)),
+});
 
-export default SignUp;
+export default connect(null, mapDispatchToProps)(SignUp);
