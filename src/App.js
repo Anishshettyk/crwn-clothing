@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 //for React router
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
@@ -19,47 +19,30 @@ import { checkUserSession } from "./redux/user/user.actions";
 //importing user selector
 import { selectCurrentUser } from "./redux/user/user.selector";
 
-//making a class component of App from react component
-class App extends React.Component {
-  //starting will null
-  unsubscribeFromAuth = null;
-
-  //when the component is mounted set unsubscribeFromAuth to the currentUser
-  componentDidMount() {
-    const { checkUserSession } = this.props;
+const App = ({ checkUserSession, currentUser }) => {
+  useEffect(() => {
     checkUserSession();
-  }
-  //called at last and it will unmount the logging in functionality
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
+  }, [checkUserSession]);
+  //the array as a second argument means if checkUserSession changes then fire useEffect again.
 
-  render() {
-    //passing the current user by using this.state.currentUser and using it in haeders to have a signout /sign-in functionality.
-
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={checkoutPage} />
-          <Route
-            exact
-            path="/signin"
-            render={() =>
-              this.props.currentUser ? (
-                <Redirect to="/" />
-              ) : (
-                <SignInAndSignUpPage />
-              )
-            }
-          />
-        </Switch>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/shop" component={ShopPage} />
+        <Route exact path="/checkout" component={checkoutPage} />
+        <Route
+          exact
+          path="/signin"
+          render={() =>
+            currentUser ? <Redirect to="/" /> : <SignInAndSignUpPage />
+          }
+        />
+      </Switch>
+    </div>
+  );
+};
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
@@ -69,5 +52,4 @@ const mapDispatchToProps = (dispatch) => ({
   checkUserSession: () => dispatch(checkUserSession()),
 });
 
-//=>value is set to null because we don't set it in our app component
 export default connect(mapStateToProps, mapDispatchToProps)(App);
