@@ -7,7 +7,7 @@ import { createStructuredSelector } from "reselect";
 //css file for app.js
 import "./App.css";
 
-//importing all the pages for the web
+//importing all the pages for the web.
 import Header from "./components/header/header.component";
 import HomePage from "./pages/homepage/homepage.components";
 import ShopPage from "./pages/shop/shop.component";
