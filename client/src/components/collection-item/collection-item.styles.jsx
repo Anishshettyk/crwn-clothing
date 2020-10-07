@@ -18,6 +18,17 @@ export const CollectionItemContainer = styled.div`
       opacity: 0.85;
     }
   }
+  @media screen and (max-width: 800px) {
+    width: 40vw;
+
+    .image {
+      opacity: unset;
+    }
+
+    button {
+      opacity: unset;
+    }
+  }
 `;
 
 export const AddButton = styled(CustomButton)`
@@ -26,6 +37,13 @@ export const AddButton = styled(CustomButton)`
   position: absolute;
   top: 255px;
   display: none;
+
+  @media screen and (max-width: 800px) {
+    display: block;
+    opacity: 0.9;
+    min-width: unset;
+    padding: 0 10px;
+  }
 `;
 
 export const BackgroundImage = styled.div`
