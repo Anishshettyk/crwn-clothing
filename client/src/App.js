@@ -4,16 +4,13 @@ import Spinner from "./components/spinner/spinner.component";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-
 import { GlobalStyle } from "./global.styles";
 
-//importing all the pages for the web.
 import Header from "./components/header/header.component";
 
 import { checkUserSession } from "./redux/user/user.actions";
-
-//importing user selector
 import { selectCurrentUser } from "./redux/user/user.selector";
+import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
 const HomePage = lazy(() => import("./pages/homepage/homepage.components"));
 const ShopPage = lazy(() => import("./pages/shop/shop.component"));
@@ -33,18 +30,20 @@ const App = ({ checkUserSession, currentUser }) => {
       <GlobalStyle />
       <Header />
       <Switch>
-        <Suspense fallback={<Spinner />}>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={checkoutPage} />
-          <Route
-            exact
-            path="/signin"
-            render={() =>
-              currentUser ? <Redirect to="/" /> : <SignInAndSignUpPage />
-            }
-          />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<Spinner />}>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/shop" component={ShopPage} />
+            <Route exact path="/checkout" component={checkoutPage} />
+            <Route
+              exact
+              path="/signin"
+              render={() =>
+                currentUser ? <Redirect to="/" /> : <SignInAndSignUpPage />
+              }
+            />
+          </Suspense>
+        </ErrorBoundary>
       </Switch>
     </div>
   );
